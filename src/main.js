@@ -7,6 +7,7 @@ import {animate, spring, createTimeline, svg} from 'animejs'
 //Container containing the textarea and buffer
 const $container = document.querySelector('.container');
 const $textarea = $container.getElementsByClassName('text')[0];
+const $textwarning = $container.getElementsByClassName('text-warning')[0];
 const $buffer = $container.querySelector('.loader-container');
 //Animate the textarea intro.
 animate($container,
@@ -34,30 +35,52 @@ let anim = animate($container,
 )
 
 //Add event listener for when the textarea is focused or blurred.
-$textarea.addEventListener('focus', () => anim.play());
+$textarea.addEventListener('focus', () => {
+  anim.play();
+  $container.classList.remove('warn');
+  $textwarning.style.opacity = 0;
+});
 $textarea.addEventListener('blur', () => anim.reverse());
 
 $textarea.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   e.preventDefault();
+
+
+  if ($textarea.value.trim() === '') {
+    $container.classList.add('warn');
+    $textwarning.style.opacity = 1;
+    animate($container, {
+      translateX: [0, 50, -50, 0],
+      duration: 200,
+      ease: 'inOutSine'
+    });
+    return;
+  }
+
+  $container.classList.remove('warn');
+  $textwarning.style.opacity = 0;
   onEnter();
 
 })
 
-
-function onEnter() {
-  $textarea.disabled = true;
-
-  const timeline = createTimeline ({
-    defaults: {
-      duration: 400,
-      ease: 'outBack(1.02)'
-    }
+const timeline = createTimeline ({
+  autoplay: false,
+  defaults: {
+    duration: 400,
+    ease: 'outBack(1.02)',
+    
+  }
   });
 
   timeline.add($textarea, {opacity: 0}, 0)
   .add($container, {width: 60, height: 60, padding: 20}, 0)
   .add($buffer, {opacity: 1}, 0);
+
+function onEnter() {
+  $textarea.disabled = true;
+
+  timeline.play();
 
   animate($buffer, {
     rotate: [0, 360],
