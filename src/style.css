@@ -38,8 +38,10 @@ body {
   width: 100%;
 }
 
+
 .container {
   display: flex;
+  
   align-items: center;
   justify-content: center;
   background-color: #3b3b3b;
@@ -50,10 +52,13 @@ body {
   padding: 20px;
 }
 
+.container > * {
+  font-family: Torus Pro;
+}
+
 .text {
   background: none;
   display: flex;
-  font-family: Torus Pro;
   font-weight:  600;
   color: #d5d5d5;
   font-size: 25px;
