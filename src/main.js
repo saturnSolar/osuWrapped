@@ -46,6 +46,8 @@ $textarea.addEventListener('keydown', (e) => {
 
 
 function onEnter() {
+  $textarea.disabled = true;
+
   const timeline = createTimeline ({
     defaults: {
       duration: 400,
