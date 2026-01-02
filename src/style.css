@@ -30,24 +30,35 @@ body {
   min-height: 100vh;
 }
 
+.container-center {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b3b3b;
+  border-radius: 50px;
+  box-shadow: 0px 20px 60px #10000000;
+  width: 30vw;
+  height: auto;
 }
 
 .text {
-    background-color: #3b3b3b;
-    padding: 20px;
-    display: flex;
-    border-radius: 50px;
-    box-shadow: 0px 20px 60px #10000000;
-    width: 30vw;
-    font-family: Torus Pro;
-    font-weight:  600;
-    color: #d5d5d5;
-    font-size: 25px;
-    text-align: center;
-    border: none;
+  background: none;
+  padding: 20px;
+  display: flex;
+  font-family: Torus Pro;
+  font-weight:  600;
+  color: #d5d5d5;
+  font-size: 25px;
+  text-align: center;
+  border: none;
 }
 
 .text::placeholder {
