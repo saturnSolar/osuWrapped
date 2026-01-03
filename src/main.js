@@ -2,13 +2,16 @@ import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
-import {animate, spring, createTimeline, svg} from 'animejs'
+import {animate, splitText, stagger, createTimeline, svg, split} from 'animejs'
 
 //Container containing the textarea and buffer
 const $container = document.querySelector('.container');
 const $textarea = $container.getElementsByClassName('text')[0];
 const $textwarning = $container.getElementsByClassName('text-warning')[0];
 const $buffer = $container.querySelector('.loader-container');
+const $logocontainer = document.querySelector('.logo-container');
+const $osulogo = $logocontainer.querySelector('.osulogo');
+const $logotext = $logocontainer.querySelector('.logo-text')
 //Animate the textarea intro.
 animate($container,
   {
@@ -70,7 +73,8 @@ const timeline = createTimeline ({
     duration: 400,
     ease: 'outBack(1.02)',
     
-  }
+  },
+  onComplete: self => onFinish()
   });
 
   timeline.add($textarea, {opacity: 0}, 0)
@@ -88,5 +92,36 @@ function onEnter() {
     loop: true,
     ease: 'inOutSine'
   });
+}
+
+// const { logo_text_chars } = splitText($logotext, {chars: true});
+
+//Finish animation test
+function onFinish() {
+  const introStart = createTimeline({
+  })
+
+  introStart.add($container, {
+    opacity: 0,
+    duration: 200,
+    onComplete: self => $container.style.display = 'none'
+  }, 0)
+  .add(svg.createDrawable($osulogo.children), {
+    draw: ['0 0', '0 1'],
+    ease: 'inOutQuad',
+    duration: 500,
+    delay: stagger(100),
+    loop: false,
+    onBegin: self => $logocontainer.classList.remove('off')
+  }, 200)
+  .add($logotext, {
+    height: [0, 30],
+    duration: 500,
+    ease: 'inOutCirc',
+    onBegin: self => $logotext.style.display = 'block'
+  })
+  .add($logocontainer.querySelector('.comingsoon'), {opacity: 1, duration: 1000, delay: 300});
+
+
 }
 // setupCounter(document.querySelector('#counter'))
