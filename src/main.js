@@ -10,6 +10,7 @@ const $textarea = $container.getElementsByClassName('text')[0];
 const $textwarning = $container.getElementsByClassName('text-warning')[0];
 const $buffer = $container.querySelector('.loader-container');
 const $logocontainer = document.querySelector('.logo-container');
+const $processcontainer = document.querySelector('.process-container')
 const $osulogo = $logocontainer.querySelector('.osulogo');
 const $logotext = $logocontainer.querySelector('.logo-text')
 //Animate the textarea intro.
@@ -74,7 +75,7 @@ const timeline = createTimeline ({
     ease: 'outBack(1.02)',
     
   },
-  onComplete: self => onFinish()
+  onComplete: self => addProcessText('the')
   });
 
   timeline.add($textarea, {opacity: 0}, 0)
@@ -121,7 +122,34 @@ function onFinish() {
     onBegin: self => $logotext.style.display = 'block'
   })
   .add($logocontainer.querySelector('.comingsoon'), {opacity: 1, duration: 1000, delay: 300});
-
-
 }
+
+function addProcessText(text) {
+  const $texts = $processcontainer.getElementsByClassName('text-process')
+  if ($texts) {
+    animate($texts[0], {
+      opacity: 0,
+      translateY: 20,
+      duration: 200,
+      onBegin: self => $texts[0].classList.add('leave'),
+      onComplete: self => $texts[0].remove()
+    });
+  }
+  const $new_text = document.createElement('p');
+
+  $new_text.classList.add('text-process');
+  $new_text.textContent = text;
+  $processcontainer.appendChild($new_text);
+  animate($new_text, {
+    opacity: 1,
+    translateY: [-20, 0],
+    duration: 200,
+    onBegin: self => $new_text.classList.add('enter'),
+    onComplete: self => {$new_text.classList.remove('enter');
+      return new Promise((resolve, reject) => resolve());
+    }
+  })
+}
+
 // setupCounter(document.querySelector('#counter'))
+//TODO: add a fade-in animation when showing text process thing
