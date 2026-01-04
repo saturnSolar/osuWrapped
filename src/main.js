@@ -75,7 +75,7 @@ const timeline = createTimeline ({
     ease: 'outBack(1.02)',
     
   },
-  onComplete: self => addProcessText('the')
+  onComplete: self => processData($textarea.value)
   });
 
   timeline.add($textarea, {opacity: 0}, 0)
@@ -96,6 +96,14 @@ function onEnter() {
 }
 
 // const { logo_text_chars } = splitText($logotext, {chars: true});
+async function processData(username, depth) {
+  $processcontainer.classList.toggle('show');
+
+  const test = await addProcessText('the');
+  const test2 = await addProcessText('ts');
+  const test3 = await addProcessText(username);
+}
+
 
 //Finish animation test
 function onFinish() {
@@ -136,19 +144,20 @@ function addProcessText(text) {
     });
   }
   const $new_text = document.createElement('p');
-
-  $new_text.classList.add('text-process');
-  $new_text.textContent = text;
-  $processcontainer.appendChild($new_text);
-  animate($new_text, {
-    opacity: 1,
-    translateY: [-20, 0],
-    duration: 200,
-    onBegin: self => $new_text.classList.add('enter'),
-    onComplete: self => {$new_text.classList.remove('enter');
-      return new Promise((resolve, reject) => resolve());
-    }
-  })
+  return new Promise(resolve => {
+    $new_text.classList.add('text-process');
+    $new_text.textContent = text;
+    $processcontainer.appendChild($new_text);
+    animate($new_text, {
+      opacity: 1,
+      translateY: [-20, 0],
+      duration: 200,
+      onBegin: self => $new_text.classList.add('enter'),
+      onComplete: self => {$new_text.classList.remove('enter');
+      resolve("the");
+      }
+    })
+  });
 }
 
 // setupCounter(document.querySelector('#counter'))
