@@ -9,6 +9,8 @@ import {
   split,
 } from "animejs";
 
+import { processInput } from "./processScreen.js";
+
 function loadingAnimation(element) {
   let spinner = element.getElementsByClassName("spinner")[0];
   const timeline = createTimeline({
@@ -30,6 +32,18 @@ function loadingAnimation(element) {
   return timeline;
 }
 
+function errorWarn(container, warningText) {
+  const textwarning = container.getElementsByClassName("text-warning")[0];
+  container.classList.add("warn");
+  textwarning.textContent = warningText;
+  textwarning.style.opacity = 1;
+  animate(container, {
+    translateX: [0, 100, -100, 0],
+    duration: 200,
+    ease: "inOutSine",
+  });
+}
+
 export function inputScreen() {
   const el = document.createElement("div");
   el.classList.add("input-screen");
@@ -48,7 +62,7 @@ export function inputScreen() {
         </svg>
       </div>
       <div class="process-container">
-        <p class="text-process">killing myself</p>
+        <p class="text-process"></p>
       </div>
     </div>
     `;
@@ -72,13 +86,6 @@ export function inputScreen() {
   });
 
   //Animations
-  let shakeAnim = animate($container, {
-    autoplay: false,
-    translateX: [0, 100, -100, 0],
-    duration: 200,
-    ease: "inOutSine",
-  });
-
   let loadingAnim = loadingAnimation(
     $loadingContainer.getElementsByClassName("loader-container")[0],
   );
@@ -96,9 +103,7 @@ export function inputScreen() {
     e.preventDefault();
 
     if ($textarea.value.trim() === "") {
-      $container.classList.add("warn");
-      $textwarning.style.opacity = 1;
-      shakeAnim.restart();
+      errorWarn($container, "Please input a username.");
       return;
     }
 
@@ -106,19 +111,32 @@ export function inputScreen() {
     $textwarning.style.opacity = 0;
     loadingAnim.restart();
     $textarea.disabled = true;
-    processInput($textarea.value);
+    $container.classList.toggle("disabled");
+    attemptProcess($container, $textarea.value);
   });
 }
 
-async function processInput(data) {
-  const text1 = await addProcessText("Processing...");
-  const text2 = await addProcessText("Analyzing...");
-  const text3 = await addProcessText("Generating...");
-  const text4 = await addProcessText("Finalizing...");
-  const text5 = await addProcessText("Done!");
+async function attemptProcess(container, data) {
+  const loadingAnim = loadingAnimation(
+    document
+      .getElementsByClassName("input-screen")[0]
+      .getElementsByClassName("loader-container")[0],
+  );
+
+  try {
+    await processInput(data);
+  } catch (error) {
+    errorWarn(container, error.message);
+  } finally {
+    addProcessText("");
+    loadingAnim.complete();
+    container.getElementsByClassName("text")[0].disabled = false;
+    container.classList.toggle("disabled");
+    return;
+  }
 }
 
-function addProcessText(text) {
+export function addProcessText(text) {
   const $processcontainer =
     document.getElementsByClassName("process-container")[0];
   const $texts = $processcontainer.getElementsByClassName("text-process");
