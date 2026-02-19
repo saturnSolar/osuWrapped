@@ -22,6 +22,10 @@
     padding: 20px;
 }
 
+.input-container.disabled {
+    pointer-events: none;
+}
+
 .input-container:hover {
     border-color: var(--container-border-color-hover);
 }
