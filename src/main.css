@@ -1,0 +1,27 @@
+:root {
+    font-family: Torus Pro;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #181b1b;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --container-color: #242929;
+    --container-border-color-hover: #7e9191;
+    --placeholder-color: #7e9191;
+    --container-border-color-focus: #8cabab;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    min-width: 320px;
+    max-height: 100vh;
+}
