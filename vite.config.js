@@ -1,7 +1,10 @@
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   base: "/osuWrapped/", // Replace with your actual repo name!
+
+  plugins: [tailwindcss()],
 
   server: {
     proxy: {
