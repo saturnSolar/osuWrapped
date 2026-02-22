@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+#loading-container {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+}
+
+#loader-container {
+    display: flex;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background-color: rgba(12, 12, 12, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+#process-container {
+    display: block;
+    position: absolute;
+    top: 100px;
+    width: 200px;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+#process-container.show {
+    display: block;
+    opacity: 1;
+}
+
+.text-process {
+    color: #676767;
+    position: absolute;
+    text-align: center;
+    margin: 0px;
+    width: 100%;
+}
+
+#spinner circle {
+    fill: none;
+    stroke: #d5d5d5;
+    stroke-width: 5px;
+    stroke-dasharray: 94 125;
+    stroke-linecap: round;
+}

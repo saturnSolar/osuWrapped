@@ -1,4 +1,4 @@
-import { addProcessText } from "./inputScreen.js";
+import { addProcessText } from "./loadingIcon.js";
 import { getToken } from "./login.js";
 import { getUser } from "./fetchData.js";
 
